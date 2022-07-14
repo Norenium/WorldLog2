@@ -1,0 +1,107 @@
+.woner-logo {
+      width: 40px;
+}
+
+.mp2 {
+      /* float: left; */
+      position: absolute;
+      align-self: end;
+      /* left: 10px; */
+      /* top: 10px; */
+      /* width: 40px; */
+      z-index: 99;
+      /* background-color: #b1cf5770; */
+      padding: 6px;
+      color: #151b02e0;
+      font-weight: bold;
+      font-size: small;
+      margin-left: 110px;
+      margin-top: -55px;
+      border-radius: 5px;
+}
+
+.light-color-text {
+      color: #FDA;
+
+}
+
+.Agral {
+      background-color: #bba31e;
+      color: #dde2cae0;
+
+}
+
+.mp {
+      /* float: left; */
+      position: absolute;
+      /* left: 0px;
+      top: 0px; */
+      width: 88px;
+      z-index: 1000;
+      background-color: #b1cf5770;
+      padding: 6px;
+      color: #151b02e0;
+      font-weight: bold;
+      font-size: small;
+      margin-left: 10px;
+      margin-top: 10px;
+      display: none;
+      border-radius: 5px;
+}
+
+.mp p {
+      margin: 0px;
+}
+
+#toolbar {
+      width: 1500px;
+      /* height: 40px; */
+      background-color: #505;
+}
+
+.tool-btn {
+
+      background-color: rgb(109, 3, 109);
+      border: 2px solid #FDA;
+      color: #FDA;
+
+      margin-top: 6px;
+      margin-left: 4px;
+      margin-bottom: 6px;
+      margin-right: 4px;
+}
+
+.tool-btn:hover {
+      background-color: rgb(153, 9, 153);
+      border: 2px solid rgb(228, 193, 141);
+
+}
+
+.btn-active {
+      background-color: rgb(226, 82, 226);
+      border: 2px solid #FDA;
+      color: #FDA;
+}
+
+.pixle {
+      width: 150px !important;
+      height: 150px;
+      margin: 0px !important;
+      padding: 0px !important;
+}
+
+.pixle:hover {
+      border: 1px gray solid;
+}
+
+.pixle-hover {
+      border: 1px gray solid;
+}
+
+.my-row {
+      width: 2250px !important;
+
+      display: flex;
+      flex-wrap: wrap;
+
+}
