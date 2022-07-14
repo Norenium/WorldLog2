@@ -1,0 +1,640 @@
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+
+<head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <title>Bin Valley</title>
+
+      <!-- project css file  -->
+      <link rel="stylesheet" href="assets/css/style.css">
+
+
+
+      <!--#region favicon -->
+      <link rel="apple-touch-icon" sizes="180x180" href="assets/images/favicon/apple-touch-icon.png">
+      <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon/favicon-32x32.png">
+      <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon/favicon-16x16.png">
+      <link rel="manifest" href="assets/images/favicon/site.webmanifest">
+      <!-- #endregion    -->
+
+      <!-- #region  BOOTSTRAP  -->
+      <!-- <link rel="stylesheet" href="assets/node_modules/bootstrap/dist/css/bootstrap.min.css"> -->
+      <link rel="stylesheet" href="assets/node_modules/bootstrap/dist/css/bootstrap.css">
+      <!-- <link rel="stylesheet" href="assets/node_modules/bootstrap/dist/js/bootstrap.js"> -->
+
+      <!-- #endregion    -->
+
+
+      <!--#region Meta tags -->
+      <meta property="og:image"
+            content="https://norenium.github.io/Bin-Valley/assets/images/favicon/apple-touch-icon.png">
+      <meta property="og:description" content="The cutest GameFi platform ever.">
+      <meta property="og:url" content="https://norenium.github.io/Bin-Valley/">
+      <meta property="og:title" content="Bin Valley">
+      <!-- #endregion    -->
+
+
+      <!-- #region Google Fonts  -->
+      <link href="https://fonts.googleapis.com/css2?family=Changa:wght@300&family=Jura:wght@300;400;500;700&family=Roboto:wght@100;300;400;500;700;900&family=Tourney:wght@200&display=swap"
+            rel="stylesheet">
+
+      <!-- icon -->
+      <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+      <!-- #endregion    -->
+
+
+</head>
+
+<body>
+      <div class="waiting" id="main-waiting">
+            <div class="text-center">
+                  <div class="spinner-border color-fda" style="width: 5rem; height: 5rem;" role="status">
+                        <span class="visually-hidden">Loading....</span>
+                  </div>
+            </div>
+      </div>
+      <div class="header-box">
+            <div class="header-title">
+                  <h1>Bin Valley</h1>
+                  <p onclick="waitingTest()">Once upon a time on a far far island....</p>
+            </div>
+      </div>
+
+      <div class="connect-wallet" id="connect-wallet-div" style="display: block;">
+            <h4>You'll not see the correct info if your wallet is not connected.</h4>
+            <button onclick="StartContract()" class="connect-wallet-btn" id="connect-wallet-btn">Connect Wallet</button>
+            <div class="d-flex justify-content-center" style="display: block; margin-top: 20px;" id="c-w-spinnet">
+                  <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                  </div>
+            </div>
+      </div>
+      <div class="connect-wallet" id="start-div" style="display: none;">
+            <h4>Start</h4>
+            <p>Seems you haven't been in the game yet. Pick a name and start:</p>
+
+            <div class="land-for-sale col-12 row  bottom">
+
+
+                  <p class="col-6 row ">Enter a Name: <input type="text" id="start-name"> </p>
+                  <div class="col-6 float-end">
+                        <button type="button" class="btn btn-primary float-right inl col-6 align-bottom"
+                              onclick="start()" style="margin-top:20px;">START</button>
+
+                        </button>
+                  </div>
+            </div>
+      </div>
+
+      <div id="boards-container" style="display: none;">
+
+            <div class="body-box">
+                  <h1 class="accordion">Information board <span class="float-end">
+
+                              <span class="pointer material-symbols-outlined" id="exp-l-0" style="display: none;">
+                                    expand_less</span>
+                              <span class="pointer material-symbols-outlined" id="exp-m-0">
+                                    expand_more</span>
+                        </span>
+                  </h1>
+
+                  <div class="panel1" style="display: block;">
+
+                        <p>You will see all the information here. such as your inventory and assets and ...</p>
+                        <p id="contract-address"></p>
+                        <hr>
+                        <div class="row col-12">
+                              <div class="col-6">
+                                    <div class="control-unit">
+                                          <p>Name: <span id="my-name">..........</span> </p>
+                                          <div class="row">
+                                                <div class="col-3">
+                                                      <p id="health-title">health: </p>
+                                                </div>
+                                                <div class="col-9" style="padding-top:9px ;">
+
+                                                      <div class="progress">
+                                                            <div class="progress-bar bg-success " role="progressbar"
+                                                                  style="width: 0%" aria-valuenow="80" aria-valuemin="0"
+                                                                  aria-valuemax="100" id="health-bar">
+                                                                  <span id="health-percentage">0%</span>
+                                                            </div>
+                                                      </div>
+                                                </div>
+                                          </div>
+                                          <div class="row">
+                                                <div class="col-3">
+                                                      <p id="health-title">Fat: </p>
+                                                </div>
+                                                <div class="col-9" style="padding-top:9px ;">
+
+                                                      <div class="progress">
+                                                            <div class="progress-bar bg-warning " role="progressbar"
+                                                                  style="width: 0%" aria-valuenow="20" aria-valuemin="0"
+                                                                  aria-valuemax="100" id="fat-bar">
+                                                                  <span id="fat-percentage">0%</span>
+                                                            </div>
+                                                      </div>
+                                                      <span class="little-comment float-end"> ≈ <span id="fat-cal">
+                                                            </span></span>
+
+                                                </div>
+                                          </div>
+                                          <div class="row">
+                                                <div class="col-3">
+                                                      <p id="health-title">Energy: </p>
+                                                </div>
+                                                <div class="col-9" style="padding-top:9px ;">
+
+                                                      <div class="progress">
+                                                            <div class="progress-bar bg-danger " role="progressbar"
+                                                                  style="width: 0%" aria-valuenow="100"
+                                                                  aria-valuemin="0" aria-valuemax="100" id="energy-bar">
+                                                                  <span id="energy-percentage"></span>
+                                                            </div>
+                                                      </div>
+                                                      <span class="little-comment float-end"> ≈ <span id="energy-cal">
+                                                            </span></span>
+                                                </div>
+
+
+                                          </div>
+                                          <br>
+                                          <div class=" float-end ">
+                                                <br>
+                                                <a class="connect-wallet-btn btn-sm" href="./maptest.html"
+                                                      target="_blank">Open the map</a>
+                                                <br>
+
+                                          </div>
+                                    </div>
+
+                              </div>
+                              <div class="col-6">
+                                    <div class="control-unit  ">
+                                          <p>Inventory: </p>
+                                          <hr>
+                                          <div class="row">
+                                                <div class="col-10 ">
+                                                      <p id="health-title">OOPS: <span class="float-end"><span
+                                                                        id="op-val">--</span>
+                                                                  OP</span> </p>
+                                                </div>
+                                                <div class="col-10 ">
+                                                      <p id="health-title">Bread: <span class="float-end"><span
+                                                                        id="br-val">--</span> BR</span> </p>
+                                                </div>
+
+                                                <div class="col-10 ">
+                                                      <p id="health-title">Meat: <span class="float-end"><span
+                                                                        id="mt-val">
+                                                                        --</span> MT</span> </p>
+                                                </div>
+                                                <div class="col-10 ">
+                                                      <p id="health-title">Electricity: <span class="float-end"><span
+                                                                        id="mw-val">--</span> MW</span> </p>
+                                                </div>
+                                                <div class="col-10 ">
+                                                      <p id="health-title">Wheat: <span class="float-end"><span
+                                                                        id="wh-val">--</span> WH</span> </p>
+                                                </div>
+
+                                                <div class="col-10 ">
+                                                      <p id="health-title">Flour: <span class="float-end"><span
+                                                                        id="fl-val">--</span> FL</span></p>
+                                                </div>
+                                          </div>
+                                    </div>
+                              </div>
+                        </div>
+                  </div>
+
+            </div>
+
+            <div class="body-box">
+                  <h1 class="accordion">Control board <span class="float-end">
+
+                              <span class="pointer material-symbols-outlined" id="exp-l-1" style="display: none;">
+                                    expand_less</span>
+                              <span class="pointer material-symbols-outlined" id="exp-m-1">
+                                    expand_more</span>
+                        </span>
+
+                  </h1>
+                  <div class="panel1" style="display: none;">
+                        <p>You have access to game actions here:</p>
+                        <hr>
+                        <div class="row col-12">
+                              <div class="col-6">
+
+                                    <div class="control-unit">
+                                          <p>Eat food:</p>
+                                          <hr>
+                                          <div class="input-group input-group-sm mb-3">
+                                                <span class="input-group-text inp-color" id="inputGroup-sizing-sm">Eat
+                                                      Meat: </span>
+                                                <input type="number" class="form-control" value="50"
+                                                      onClick="this.select();" aria-label="Sizing example input"
+                                                      aria-describedby="inputGroup-sizing-xs" id="eat-meat-inp">
+                                                <button onclick="EatMeat()" class="btn btn-outline-primary"
+                                                      type="button">Eat</button>
+                                          </div>
+                                          <div class="info-span">Info: eating 100 meat gives you 143 cal Energy + 2 cal
+                                                of Fat. </div>
+                                          <br>
+                                          <div class="input-group input-group-sm mb-3">
+                                                <span class="input-group-text inp-color" id="inputGroup-sizing-sm">Eat
+                                                      Bread: </span>
+                                                <input type="number" class="form-control" value="50"
+                                                      aria-label="Sizing example input"
+                                                      aria-describedby="inputGroup-sizing-xs" id="eat-bread-inp">
+                                                <button onclick="EatBread()" class="btn btn-outline-primary"
+                                                      type="button">Eat</button>
+                                          </div>
+                                          <div class="input-group input-group-sm mb-3">
+                                                <span class="input-group-text inp-color" id="inputGroup-sizing-sm">Eat
+                                                      Sandwich: </span>
+                                                <input type="number" class="form-control" value="50"
+                                                      aria-label="Sizing example input"
+                                                      aria-describedby="inputGroup-sizing-xs" id="eat-sandwich-inp">
+                                                <button onclick="EatSandwich()" class="btn btn-outline-primary"
+                                                      type="button">Eat</button>
+                                          </div>
+
+
+                                    </div>
+                              </div>
+                              <div class="col-6">
+
+
+                                    <div class="control-unit">
+                                          <p>Work:</p>
+                                          <hr>
+
+                                          <p>Hunting: </p>
+                                          <p class="alert alert-danger" role="alert" id="no-hc" style="display: none;">
+                                                You have not any hunting camp.</p>
+                                          <div id="hunting-time" style="display: block;">
+                                                <p style="display: none;" id="next-hunt">Time to next hunt: <span
+                                                            id="hunt-timer">--:--:--</span></p>
+                                                <button onclick="Hunt()" class="connect-wallet-btn" id="hunt-btn"
+                                                      style="display: block;" disabled>Hunt</button>
+                                          </div>
+                                    </div>
+                              </div>
+
+                        </div>
+                  </div>
+            </div>
+
+            <div class="body-box">
+                  <h1 class="accordion">Lands control board
+                        <span class="float-end">
+
+                              <span class="pointer material-symbols-outlined" id="exp-l-2" style="display: none;">
+                                    expand_less</span>
+                              <span class="pointer material-symbols-outlined" id="exp-m-2">
+                                    expand_more</span>
+                        </span>
+
+                  </h1>
+                  <div class="panel1" style="display: none;">
+
+                        <p>Manages Lands and lands market here:</p>
+                        <hr id="land-market-top">
+
+                        <div class="control-unit  ">
+                              <p class="accordion">My Lands:
+                                    <span class="float-end">
+                                          <span class="pointer material-symbols-outlined" id="exp-l-3"
+                                                style="display: none;">
+                                                expand_less</span>
+                                          <span class="pointer material-symbols-outlined" id="exp-m-3">
+                                                expand_more</span>
+                                    </span>
+                              </p>
+                              <div class="panel1" id="my-lands" style="display: none;">
+                                    <hr>
+                              </div>
+                              <div id="loading-lands" class="text-center">
+                                    <div class="spinner-border " role="status">
+                                          <span class="visually-hidden">Loading...</span>
+                                    </div>
+                              </div>
+                              <p id="no-lands" style="display: none;">You have not any Land yet.</p>
+
+
+                        </div>
+                        <br>
+                        <div class="control-unit">
+                              <p class="accordion">Land for sale:
+                                    <span class="float-end">
+                                          <span class="pointer material-symbols-outlined" id="exp-l-4"
+                                                style="display: none;">
+                                                expand_less</span>
+                                          <span class="pointer material-symbols-outlined" id="exp-m-4">
+                                                expand_more</span>
+                                    </span>
+                              </p>
+                              <div id="sell-list" style="display: block;">
+                                    <hr>
+                                    <div id="loading-sell-lands" class="text-center">
+                                          <div class="spinner-border " role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                          </div>
+                                    </div>
+                                    <p id="no-sell-lands" style="display: none;">There are no lands to sell yet.</p>
+
+                              </div>
+                        </div>
+                        <br>
+                        <div class="control-unit" id="my-permits-div">
+                              <p>My Permits:</p>
+                              <hr>
+                              <div id="loading-permits" class="text-center">
+                                    <div class="spinner-border " role="status">
+                                          <span class="visually-hidden">Loading...</span>
+                                    </div>
+                              </div>
+                              <div id="my-permits-list">
+                                    <p id="no-permit" style="display: none;">You have no permits yet.</p>
+                              </div>
+                        </div>
+                        <br>
+                        <div class="control-unit" id="my-permits-div">
+                              <p>My Buildings:</p>
+                              <hr>
+                              <div id="my-buildings-list">
+
+                                    <div id="loading-building" class="text-center">
+                                          <div class="spinner-border " role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                          </div>
+                                    </div>
+                                    <p id="no-building" style="display: none;">You have not any building yet.</p>
+
+                              </div>
+                        </div>
+                        <br>
+                        <div class="control-unit">
+                              <p>List a land to sell:</p>
+                              <hr>
+                              <div>
+                                    <div class="land-for-sale col-8 row">
+
+
+                                          <div class="input-group input-group-sm mb-3">
+                                                <span class="input-group-text inp-color" id="inputGroup-sizing-sm">Enter
+                                                      Land Id: </span>
+                                                <input type="text" class="form-control"
+                                                      aria-label="Sizing example input"
+                                                      aria-describedby="inputGroup-sizing-xs" id="sell-landId">
+                                          </div>
+                                          <div class="input-group input-group-sm mb-3">
+                                                <span class="input-group-text inp-color" id="inputGroup-sizing-sm">Enter
+                                                      Price: &nbsp;&nbsp;&nbsp; </span>
+                                                <input type="number" class="form-control"
+                                                      aria-label="Sizing example input"
+                                                      aria-describedby="inputGroup-sizing-sm" id="sell-price">
+                                          </div>
+                                          <div class=" ">
+                                                <button type="button" class="btn-sm btn-primary float-end "
+                                                      onclick="listLand()">List</button>
+                                                </button>
+                                          </div>
+
+
+
+
+                                    </div>
+                              </div>
+                              <hr>
+
+                              <p>Remove land from sell list:</p>
+                              <hr>
+                              <div>
+                                    <div class="land-for-sale col-8 row">
+
+
+                                          <div class="input-group input-group-sm mb-3">
+                                                <span class="input-group-text inp-color" id="inputGroup-sizing-sm">Enter
+                                                      Land Id: </span>
+                                                <input type="text" class="form-control"
+                                                      aria-label="Sizing example input"
+                                                      aria-describedby="inputGroup-sizing-xs" id="remove-sell-landId">
+                                          </div>
+
+                                          <div class=" ">
+                                                <button type="button" class="btn-sm btn-primary float-end "
+                                                      onclick="removeListLand()">Remove</button>
+                                                </button>
+                                          </div>
+
+
+
+
+                                    </div>
+                              </div>
+                        </div>
+
+                        <br>
+
+                        <div class="control-unit">
+                              <p>Mint a permit:</p>
+                              <hr>
+                              <div>
+                                    <div class="land-for-sale col-8 row">
+
+
+
+
+                                          <div class="input-group input-group-sm mb-3">
+                                                <span class="input-group-text inp-color"
+                                                      id="inputGroup-sizing-sm">Select land type:
+                                                      &nbsp;&nbsp;&nbsp;</span>
+                                                <select class="form-select" aria-label="Default select example"
+                                                      id="mint-land-type-select">
+                                                      <option selected>Open this select menu</option>
+                                                      <option value="0">Forest</option>
+                                                      <option value="1">Empty</option>
+                                                      <option value="2">Mountain</option>
+                                                      <option value="3">Agral</option>
+                                                      <option value="4">Urban</option>
+                                                      <option value="5">Coast</option>
+                                                </select>
+                                          </div>
+                                          <div class="input-group input-group-sm mb-3">
+                                                <span class="input-group-text inp-color"
+                                                      id="inputGroup-sizing-sm">Select
+                                                      Permit type: </span>
+                                                <select class="form-select" aria-label="Default select example"
+                                                      id="mint-permit-type-select">
+                                                      <option selected>Open this select menu</option>
+                                                      <option value="0">Hunting camp</option>
+                                                      <option value="1">Wheat Farm</option>
+                                                      <option value="2">Grinder</option>
+                                                      <option value="3">Bakeshop</option>
+                                                      <option value="4">WindMill</option>
+                                                      <option value="5">House</option>
+                                                </select>
+                                          </div>
+                                          <div class=" ">
+                                                <button type="button" class="btn-sm btn-primary float-end "
+                                                      onclick="mintPermit()">Mint</button>
+                                                </button>
+                                          </div>
+
+                                    </div>
+
+
+
+                              </div>
+                        </div>
+
+                        <br>
+                        <div class="control-unit">
+                              <p>Build a building:</p>
+                              <hr>
+                              <div>
+                                    <div class="land-for-sale col-8 row">
+
+
+                                          <div class="input-group input-group-sm mb-3">
+                                                <span class="input-group-text inp-color" id="inputGroup-sizing-sm">Enter
+                                                      Land Id: &nbsp;&nbsp;</span>
+                                                <input type="text" class="form-control"
+                                                      aria-label="Sizing example input"
+                                                      aria-describedby="inputGroup-sizing-xs" id="build-landId">
+                                          </div>
+                                          <div class="input-group input-group-sm mb-3">
+                                                <span class="input-group-text inp-color" id="inputGroup-sizing-sm">Enter
+                                                      permit Id: </span>
+                                                <input type="text" class="form-control"
+                                                      aria-label="Sizing example input"
+                                                      aria-describedby="inputGroup-sizing-sm" id="build-permitId">
+                                          </div>
+                                          <div class=" ">
+                                                <button type="button" class="btn-sm btn-primary float-end "
+                                                      onclick="buildBuilding()">Build</button>
+                                                </button>
+                                          </div>
+
+
+
+
+                                    </div>
+                              </div>
+                        </div>
+                  </div>
+                  <br>
+
+
+            </div>
+
+            <div class="body-box">
+                  <h1>Market board</h1>
+                  <p>Producs market here:</p>
+
+
+                  <br>
+                  <div class="control-unit">
+                        <p>Products for sale:</p>
+
+                        <hr>
+                        <div>
+                              <p>Meat:</p>
+                              <div id="meat-sell-list"></div>
+                              <p id="no-meat-sell-list" style="display: none;">There are no meats to sell at the moment
+                              </p>
+                        </div>
+                        <br>
+                        <hr>
+                        <div>
+                              <p>Bread:</p>
+                              <div id="bread-sell-list"></div>
+                        </div>
+                        <br>
+                        <hr>
+                        <div>
+                              <p>Flour:</p>
+                              <div id="flour-sell-list"></div>
+                        </div>
+                        <br>
+                  </div>
+
+
+                  <br>
+                  <div class="control-unit">
+                        <p>Sell products:</p>
+                        <div class="info-span">You can post a sell offer by defining the aamount and a desired price for
+                              the defined amount. It will be sold as a package with the price. </div>
+                        <hr>
+
+                        <div class="control-unit">
+                              <p>Sell Meat:</p>
+                              <hr>
+                              <div>
+                                    <div class="land-for-sale col-8 row">
+
+
+                                          <div class="input-group input-group-sm mb-3">
+                                                <span class="input-group-text inp-color" id="inputGroup-sizing-sm">Enter
+                                                      Amount: </span>
+                                                <input type="number" class="form-control"
+                                                      aria-label="Sizing example input" onClick="this.select();"
+                                                      aria-describedby="inputGroup-sizing-xs" id="sell-meat-amount">
+                                          </div>
+                                          <div class="input-group input-group-sm mb-3">
+                                                <span class="input-group-text inp-color" id="inputGroup-sizing-sm">Enter
+                                                      Price: &nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                <input type="number" class="form-control"
+                                                      aria-label="Sizing example input" onClick="this.select();"
+                                                      aria-describedby="inputGroup-sizing-sm" id="sell-meat-price">
+                                          </div>
+                                          <div class=" ">
+                                                <button type="button" class="btn-sm btn-primary float-end "
+                                                      onclick="sellMeat()">Post</button>
+                                                </button>
+                                          </div>
+
+
+
+
+                                    </div>
+                              </div>
+                        </div>
+                        <br>
+                        <hr>
+                        <div>
+                              <p>Bread:</p>
+                              <div id="bread-sell-list"></div>
+                        </div>
+                        <br>
+                        <hr>
+                        <div>
+                              <p>Flour:</p>
+                              <div id="flour-sell-list"></div>
+                        </div>
+                        <br>
+                  </div>
+            </div>
+
+      </div>
+
+      </div>
+
+
+
+      <script src="./assets/node_modules/ethers/dist/ethers.umd.min.js"></script>
+      <script src="assets/js/consts.js"></script>
+      <script src="assets/js/onPageWallet.js"></script>
+      <script src="assets/js/indexManager.js"></script>
+      <script src="assets/js/indexOperator.js"></script>
+      <script src="assets/js/main.js"></script>
+
+</body>
+
+</html>
