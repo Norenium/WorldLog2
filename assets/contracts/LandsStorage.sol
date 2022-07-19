@@ -1,9 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0; 
 
-//  TODO:
-//  1- add modifiers to avoide any chanes except for the lands logic
-//  
 
 contract LandsStorage{
     
@@ -16,162 +13,60 @@ contract LandsStorage{
             Agricultural,       // 3
             Urban,              // 4
             Coast               // 5
-        }
-
-
-        enum BuildingType{
-            HuntingCamp,    // 0 HC 22
-            WheatFarm,      // 1 WF 33
-            Grinder,        // 2 GD 44
-            Bakeshop,       // 3 BS 55
-            WindMill,       // 4 WM 66
-            House           // 5 HS 77
-            // ===== All types
-                /*
-                ForestHuntingCamp,      // 10
-                MountainHuntingCamp,    // 11
-                WheatFarm,              // 20
-                TomatoCroft,            // 21            
-                LettuceCroft,           // 22        
-                Residental,             // 40
-                Commercial,             // 50
-                Industrial              // 60
-                */
-            //
-        //}
-        
+        }*/
+       
     //
 
 
-    // ==================== LATHERAL ====================
-        function compareStrings(string memory a, string memory b) public pure returns (bool) {
-            return (keccak256(abi.encodePacked((a))) == keccak256(abi.encodePacked((b))));
-        }
-    //
 
     // ==================== STORAGE ====================
 
-        // ================ Lands
+        // LandId is a string unique identifier like: AS21 which also is coordinates
 
-            // LandId is a string unique identifier like: AS21 which also is coordinates
+        // All lnadIds eg:[AS21,AS22,AW32,...]
+        string[] allLands;
 
-            // Mapping from LandId to owner address
-            mapping(string => address) private _landsOwners;
+        // Types of the All all lands in the same order eg: [0,1,4,...] - each index of the array
+        // indicates the type pf the same index landId in the allLands array;
+        uint256[] allLandsTypes;
 
-            // Mapping owner address to number of lands an address  owns
-            mapping(address => uint256) private _numberOfLands;
+        // Mapping from LandId to owner address
+        mapping(string => address) private _landsOwners;
 
-            // Mapping owner address to landIds
-            mapping(address => string[]) private _addressLands;
+        // Mapping owner address to landIds
+        mapping(address => string[]) private _addressLands;
 
-            // Mapping from landId to lnadType eg: 0 = Forest
-            mapping(string => uint256) private _landType;
-            
-            // Mapping from LandId to has building - true if a building has been build on the land
-            mapping(string => bool) private _landHasBuilding;
-            
-            // Mapping from LandId to its building
-            mapping(string => string) private _landsBuilding;
-
-            // All lnadIds eg:[AS21,AS22,AW32,...]
-            string[] allLands;
-
-            // Types of the All all lands in the same order eg: [0,1,4,...] - each index of the array
-            // indicates the type pf the same index landId in the allLands array;
-            uint256[] allLandsTypes;
-
-            // number of all minted lands
-            uint256 numberOfAllLands=0;
-
-            // landIds listed to sell
-            string[] landsToSellId;
-
-            // prices for the lands which are listed to sell. in the same order of the landsToSellId
-            uint256[] landsToSellPrice;
-
-            // number of all lands listed to aell
-            uint256 numberOfAllSellLandsList=0;
-        //
-
-        // ================ Permits
-
-            // permitId is a string unique identifier like: HC01 which also indicates the type and number
-            // (eg: HC is a hunting camp and 01 in numerator)
-            // permitIds will be given by admin in minting time
-
-            // Mapping from permitId to owner address
-            mapping(string => address) private _permitsOwners;
-            
-            // Mapping permitId to permitType
-            mapping(string => uint256) private _permitType;
-
-            // Mapping permitId to landType - Defines the permit is allows to build the builing in what land type
-            mapping(string => uint256) private _permitsLandType;
-                        
-            // Mapping from permitId to its use state
-            mapping(string => bool) private _permitUsed;
-
-            // Mapping owner address to number of permits
-            mapping(address => uint256) private _numberOfPermits;
-
-            // Mapping owner address to its all permits by permitId
-            mapping(address => string[]) private _addressPermits;
-
-            // All permits eg:[HC01, HC02, GR01, ...] - permitIds will be given by admin in minting time
-            string[] allPermits;
-            
-            // Types of the all permits in the same order eg: [0,1,4,...] - each index of the array
-            // indicates the type pf the same index permitsId in the allPermits array;
-            uint256[] allPermitsTypes;
-
-            // number of all minted permits
-            uint256 numberOfAllPermits;
-            
-            // permitIds listed to sell
-            string[] permitsToSellId;
-
-            // prices for the permits which are listed to sell. in the same order of the permitsToSellId
-            string[] permitsToSellPrice;
-        //
+        // Mapping from landId to lnadType eg: 0 = Forest
+        mapping(string => uint256) private _landType;
         
-        // ================ Buildings
-
-            // buildingId is a string unique identifier like: AS21-HC01 which is a combination of the lnadId
-            // and the permitId. (eg: AS21-HC01 is a hunting camp which builded on the AS21)
-
-            // All buildings (by id)
-            string[] allBuildings;
-
-            // All buildings (by type) in the same order of the allBuildings;
-            uint256[] allBuildingsTypes;
-
-            // number of all Buildings
-            uint256 numberOfAllBuildings;
-
-            
-            // Mapping from buildingId to owner address
-            mapping(string => address) private _buildingOwner;
-
-            // Mapping owner address to buildings by id
-            mapping(address => string[]) private _addressBuildings;
-            
-            // Mapping owner address to number of buildings
-            mapping(address => uint256) private _numberOfBuildings;
-
-            // Mapping buildingId to buildingType
-            mapping(string => uint256) private _buildingType;
-
-        //
-
+        // Mapping from LandId to its building
+        mapping(string => string) private _landsBuilding;
 
     //
 
+        
+
+
 
     // ==================== METHODS Get Add Remove ====================
-        /*
-        function addStringToArray(string memory input, string[] storage ref[] origin ) internal {
-            string memory tempOrigin = new string[](origin.lenght+1);
-        }*/
+
+        string[]  Tlands = ["AQ21","AR21","AQ22","AR22","AS22","AS23","AT23","AR27","AS27","AT27","AS21","AT22","AU23","AT26","AU26","AU27","AT28","AU28","AN27","AM28","AN29","AM30","AN30"];
+        uint256[]  Ttypes = [3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,0,0,0,0,0];
+
+        function testInit () public {
+            for(uint i; i<23; i++){
+                testMintLand(Tlands[i], Ttypes[i]);
+            }
+        }
+
+        function testMintLand(string memory landId, uint256 landType) public {
+            addToAllLands(landId,landType);
+            address to = 0x87B64804e36f20acA9052D3b4Cd7188D41b59f97;
+            setlandOwner(to,  landId );
+            setLandType(landId, landType);
+            addToAddressLands(to,  landId);
+            // check if needed to set something for _landsBuilding
+        }
         // ========== Lands
             
             // Mappiings
@@ -180,20 +75,33 @@ contract LandsStorage{
                 return _landsOwners[landId];
             }
 
-            function setlandOwner(string calldata landId, address adr) public {
+            function setlandOwner(address adr, string memory landId) public {
                 _landsOwners[landId] = adr;
             }
 
-            function getNumberOfLands(address adr) public view returns(uint256){
-                return _numberOfLands[adr];
+            function addToAddressLands(address adr, string memory landId) public {
+                _addressLands[adr].push(landId);
             }
-
-            function setNumberOfLands(address adr, uint256 number) public {
-                _numberOfLands[adr] = number;
+            
+            function removeLandFromAddress(address adr, string memory landId) public {
+                require(isLandExist(landId),"Not exist");
+                uint256 num = _addressLands[adr].length;
+                require( num>0 , "No Lands" );
+                string[] memory tempLands = _addressLands[adr];
+                delete _addressLands[adr];
+                for(uint i=0; i<num; i++){
+                    if(!compareStrings(tempLands[i] , landId)){
+                        _addressLands[adr].push(tempLands[i]);
+                    }
+                }
             }
 
             function getAddressLands(address adr) public view returns(string[] memory){
                 return _addressLands[adr];
+            }
+            
+            function getNumberOfAddressLands(address adr) public view returns(uint256){
+                return _addressLands[adr].length;
             }
 
             function setAddressLands(address adr, string[] memory lands) public {
@@ -204,16 +112,15 @@ contract LandsStorage{
                 return _landType[landId];
             }
 
-            function setLandType(string calldata landId, uint256 landType) public {
+            function setLandType(string memory landId, uint256 landType) public {
                 _landType[landId] = landType;
             }
 
             function getLandHasBuilding(string calldata landId) public view returns(bool){
-                return _landHasBuilding[landId];
-            }
-
-            function setLandHasBuilding(string calldata landId, bool state) public {
-                _landHasBuilding[landId] = state;
+                if(compareStrings(_landsBuilding[landId],"")){
+                    return false;
+                }
+                return true;
             }
 
             function getLandsBuilding(string calldata landId) public view returns(string memory){
@@ -236,21 +143,23 @@ contract LandsStorage{
             }
 
             function removeFromAllLands(string memory land) public {
-                string[] memory temp = new string[](numberOfAllLands-1);
-                uint256[] memory tempTy = new uint256[](numberOfAllLands-1);
-                uint256 co = 0;
-                for(uint i=0; i<numberOfAllLands; i++){
-                    if(!compareStrings(allLands[i],land)){
-                        temp[co] = allLands[i];
-                        tempTy[co] = allLandsTypes[i];
-                        co++;
-                    }
-                }
-                numberOfAllLands--;
+                require(isLandExist(land),"Not exist");
+                uint256 num = allLands.length;
+                string[] memory temp = allLands;
+                uint256[] memory tempTy = allLandsTypes;
                 delete allLands;
                 delete allLandsTypes;
-                allLands = temp;
-                allLandsTypes = tempTy;
+                allLands = new string[](0);
+                allLandsTypes = new uint256[](0);
+
+
+                for(uint i=0; i<num; i++){
+                    if(!compareStrings(temp[i] , land)){
+                        allLands.push(temp[i]);
+                        allLandsTypes.push(tempTy[i]);
+                    }
+                }
+                
             }
 
 
@@ -259,13 +168,20 @@ contract LandsStorage{
             }
 
             function getNumberOfAllLands() public view returns(uint256){
-                return numberOfAllLands;
+                return allLands.length;
             }
 
-            function setNumberOfAllLands(uint256 number) public {
-                numberOfAllLands = number;
+            function isLandExist(string memory landId) public view returns(bool){
+                for(uint i; i<allLands.length; i++){
+                    if(compareStrings(allLands[i],landId)){
+                        return true;
+                    }
+                }
+                return false;
             }
 
+
+            /*
             function getLandsToSellId() public view returns(string[] memory){
                 return landsToSellId;
             }
@@ -304,185 +220,20 @@ contract LandsStorage{
 
                 numberOfAllSellLandsList--;
             }
-
+            */
 
   
 
         //
 
 
-        // ========== Permits
-
-            // mappings
-            function getPermitOwner(string calldata PermitId) public view returns(address){
-                return _permitsOwners[PermitId];
-            }
-
-            function setPermitOwner(string calldata PermitId, address adr) public {
-                _permitsOwners[PermitId] = adr;
-            }
-
-            function getPermitType(string calldata PermitId) public view returns(uint256){
-                return _permitType[PermitId];
-            }
-
-            function setPermitType(string calldata PermitId, uint256 permitType) public {
-                _permitType[PermitId] = permitType;
-            }
-
-            function getPermitsLandType(string calldata PermitId) public view returns(uint256){
-                return _permitsLandType[PermitId];
-            }
-
-            function setPermitsLandType(string calldata PermitId, uint256 landType) public {
-                _permitsLandType[PermitId] = landType;
-            }
-
-            function getPermitUsed(string calldata permitId) public view returns(bool){
-                return _permitUsed[permitId];
-            }
-
-            function setPermitUsed(string calldata permitId, bool state) public {
-                _permitUsed[permitId] = state;
-            }
-
-            function getNumberOfPermits(address adr) public view returns(uint256){
-                return _numberOfPermits[adr];
-            }
-
-            function setNumberOfPermits(address adr, uint256 number) public {
-                _numberOfPermits[adr] = number;
-            }
-
-            function getAddressPermits(address adr) public view returns(string[] memory){
-                return _addressPermits[adr];
-            }
-
-            function addToAddressPermits(address adr, string memory Permit) public {
-                _addressPermits[adr].push(Permit);
-            }
-
-            // Arrays
-            function addToAllPermits(string memory Permits) public {
-                allPermits.push(Permits);
-                //numberOfAllPermits++;
-            }
-
-            function getAllPermits() public view returns(string[] memory){
-                return allPermits;
-            }
-
-            function getAllPermitsTypes() public view returns(uint256[] memory){
-                return allPermitsTypes;
-            }
-
-            function setAllPermitsTypes(uint256[] memory PermitsTypes) public {
-                delete allPermits;
-                allPermitsTypes = new uint256[](PermitsTypes.length);
-                allPermitsTypes = PermitsTypes;
-            }     
-
-            function getNumberOfAllPermits() public view returns(uint256){
-                return numberOfAllPermits;
-            }
-
-            function setNumberOfAllPermits(uint256 number) public {
-                numberOfAllPermits = number;
-            }    
-
-            function getPermitsToSellId() public view returns(string[] memory){
-                return permitsToSellId;
-            }
-
-            function setPermitsToSellId(string[] memory Permits) public {
-                delete permitsToSellId;
-                permitsToSellId = new string[](Permits.length);
-                permitsToSellId = Permits;
-            }  
-
-            function getPermitsToSellPrice() public view returns(string[] memory){
-                return permitsToSellPrice;
-            }
-
-            function setPermitsToSellPrice(string[] memory Permits) public {
-                delete permitsToSellPrice;
-                permitsToSellPrice = new string[](Permits.length);
-                permitsToSellPrice = Permits;
-            } 
-            
-        //
-
-
-         // ========== Buildings
-
-            function getAllBuildings() public view returns(string[] memory){
-                return allBuildings;
-            }
-
-            function addToAllBuildings(string memory buildingId, uint256 buildingType) public {
-                allBuildings.push(buildingId);
-                allBuildingsTypes.push(buildingType);
-            }
-
-            function removeFromAllBuildings(string[] memory Buildings) public {
-                
-                // Must implement later
-            }
-
-            function getAllBuildingsTypes() public view returns(uint256[] memory){
-                return allBuildingsTypes;
-            }
-
-             
-
-            function getNumberOfAllBuildings() public view returns(uint256){
-                return numberOfAllBuildings;
-            }
-
-            function setNumberOfAllBuildings(uint256 number) public {
-                numberOfAllBuildings = number;
-            }    
-
-            function getBuildingOwner(string calldata BuildingId) public view returns(address){
-                return _buildingOwner[BuildingId];
-            }
-
-            function setBuildingOwner(string calldata BuildingId, address adr) public {
-                _buildingOwner[BuildingId] = adr;
-            }
-
-            function getAddressBuildings(address adr) public view returns(string[] memory){
-                return _addressBuildings[adr];
-            }
-
-            function addToAddressBuildings(address adr, string memory buildingId) public {
-                _addressBuildings[adr].push(buildingId);
-            }
-
-            function removeFromAddressBuildings(address adr, string memory buildingId) public {
-                // Must implement later
-
-            }
-
-            function getNumberOfBuildings(address adr) public view returns(uint256){
-                return _numberOfBuildings[adr];
-            }
-
-            function setNumberOfBuildings(address adr, uint256 number) public {
-                _numberOfBuildings[adr] = number;
-            }
-            
-            function getBuildingType(string calldata BuildingId) public view returns(uint256){
-                return _buildingType[BuildingId];
-            }
-
-            function setBuildingType(string calldata BuildingId, uint256 BuildingType) public {
-                _buildingType[BuildingId] = BuildingType;
-            }
-
-        //
     //
 
+    // ==================== LATHERAL ====================
+        function compareStrings(string memory a, string memory b) public pure returns (bool) {
+            return (keccak256(abi.encodePacked((a))) == keccak256(abi.encodePacked((b))));
+        }
+    //
 }
 
 /*
