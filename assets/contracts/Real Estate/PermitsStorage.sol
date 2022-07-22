@@ -33,7 +33,7 @@ contract PermitsStorage{
         // and the permitId. (eg: AS21-HC01 is a hunting camp which builded on the AS21 land)
 
         // All permits (by id)
-        string[] allPermits;
+        string[] allPermits;        uint256 permitNumerator=101;
 
         // All permits (by type) in the same order of the allPermits;
         uint256[] allPermitsTypes;
@@ -148,6 +148,22 @@ contract PermitsStorage{
             }
         }
 
+        function issueNewPermit(address adr, uint256 permitType, uint256 landType) public {
+            
+            string memory typeStr;
+            if(permitType == 0){typeStr = "HC";}
+            if(permitType == 1){typeStr = "WF";}
+            if(permitType == 2){typeStr = "GD";}
+            if(permitType == 3){typeStr = "BS";}
+            if(permitType == 4){typeStr = "WM";}
+            if(permitType == 5){typeStr = "HS";}
+
+            string memory permitId = append(typeStr,uint2str(permitNumerator));
+            permitNumerator++;
+            addPermit(adr, permitId, permitType, landType);
+
+        }
+
         function addPermit(address adr, string memory permitId, uint256 permitType, uint256 landType) public {
             require(allPermits.length == allPermitsTypes.length, "Number of all permits != number of allPermitsTypes");
             allPermits.push(permitId);
@@ -232,6 +248,10 @@ contract PermitsStorage{
             return _permitUsed[permitId];
         }
 
+        function getPermitNumerator() public view returns(uint256){
+            return permitNumerator;
+        }
+
     //
 
     // ================ Set Methods ONLY FOR DEVELOPMENT PHASE
@@ -286,6 +306,34 @@ contract PermitsStorage{
     // ==================== LATHERAL ====================
         function compareStrings(string memory a, string memory b) public pure returns (bool) {
             return (keccak256(abi.encodePacked((a))) == keccak256(abi.encodePacked((b))));
+        }
+    
+        function append(string memory a, string memory b) internal pure returns (string memory) {
+            return string(abi.encodePacked( a, "-", b));
+        }
+
+
+        /// convert uint to string 
+        function uint2str(uint _i) internal pure returns (string memory _uintAsString) {
+            if (_i == 0) {
+                return "0";
+            }
+            uint j = _i;
+            uint len;
+            while (j != 0) {
+                len++;
+                j /= 10;
+            }
+            bytes memory bstr = new bytes(len);
+            uint k = len;
+            while (_i != 0) {
+                k = k-1;
+                uint8 temp = (48 + uint8(_i - _i / 10 * 10));
+                bytes1 b1 = bytes1(temp);
+                bstr[k] = b1;
+                _i /= 10;
+            }
+            return string(bstr);
         }
     //
 }

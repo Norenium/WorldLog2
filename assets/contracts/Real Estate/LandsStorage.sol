@@ -30,6 +30,9 @@ contract LandsStorage{
         // indicates the type pf the same index landId in the allLands array;
         uint256[] allLandsTypes;
 
+        // sell offers. each string is LandId+Price
+        string[] sellTickets;
+        
         // Mapping from LandId to owner address
         mapping(string => address) private _landsOwners;
 
@@ -44,7 +47,30 @@ contract LandsStorage{
 
     //
 
-        
+    // Sell Offers
+
+        function addToSellTickets(string memory sellTicket) public {
+            sellTickets.push(sellTicket);
+        }
+
+        function getAllSellTickets() public view returns (string[] memory){
+            return sellTickets;
+        }
+
+        function removeSellTicket(string memory ticket) public{
+            uint num = sellTickets.length;
+            string[] memory temp = sellTickets;
+            delete sellTickets;
+            sellTickets = new string[](0);
+
+            for(uint i=0; i<num; i++){
+                if(!compareStrings(temp[i],ticket)){
+                    sellTickets.push(temp[i]);
+                }
+            }
+        }
+
+    //
 
 
 
@@ -65,7 +91,7 @@ contract LandsStorage{
                 return allLands.length;
             }
 
-            function getlandOwner(string calldata landId) public view returns(address){
+            function getLandOwner(string calldata landId) public view returns(address){
                 return _landsOwners[landId];
             }
 
@@ -105,7 +131,7 @@ contract LandsStorage{
 
         function mintLand(address to, string memory landId, uint256 landType) public {
             addToAllLands(landId,landType);
-            setlandOwner(to,  landId );
+            setLandOwner(to,  landId );
             setLandType(landId, landType);
             addToAddressLands(to,  landId);
         }
@@ -129,7 +155,7 @@ contract LandsStorage{
             // Mappiings
 
 
-            function setlandOwner(address adr, string memory landId) public {
+            function setLandOwner(address adr, string memory landId) public {
                 _landsOwners[landId] = adr;
             }
 
@@ -137,7 +163,7 @@ contract LandsStorage{
                 _addressLands[adr].push(landId);
             }
             
-            function removeLandFromAddress(address adr, string memory landId) public {
+            function removeLandFromAddress(address adr, string calldata landId) public {
                 require(isLandExist(landId),"Not exist");
                 uint256 num = _addressLands[adr].length;
                 require( num>0 , "No Lands" );
@@ -170,7 +196,7 @@ contract LandsStorage{
                 allLandsTypes.push(landType);
             }
 
-            function removeFromAllLands(string memory land) public {
+            function removeFromAllLands(string calldata land) public {
                 require(isLandExist(land),"Not exist");
                 uint256 num = allLands.length;
                 string[] memory temp = allLands;
@@ -191,7 +217,7 @@ contract LandsStorage{
             }
 
 
-            function isLandExist(string memory landId) public view returns(bool){
+            function isLandExist(string calldata landId) public view returns(bool){
                 for(uint i; i<allLands.length; i++){
                     if(compareStrings(allLands[i],landId)){
                         return true;
@@ -200,49 +226,15 @@ contract LandsStorage{
                 return false;
             }
 
-
-            /*
-            function getLandsToSellId() public view returns(string[] memory){
-                return landsToSellId;
-            }
-            
-            function getLandsToSellPrice() public view returns(uint256[] memory){
-                return landsToSellPrice;
-            }
-
-            function getNumberOfAllSellLandsList() public view returns(uint256){
-                return numberOfAllSellLandsList;
-            }
-
-            function addLandToSellList(string memory lands, uint256 price) public {
-                landsToSellId.push(lands);
-                landsToSellPrice.push(price);
-                numberOfAllSellLandsList++;
-            }
-
-            function removeLandFromSellList(string memory land) public {
-
-                uint256 num = numberOfAllSellLandsList;
-                string[] memory temp = landsToSellId;
-                uint256[] memory tempPr = landsToSellPrice;
-                delete landsToSellId;
-                delete landsToSellPrice;
-                //landsToSellId = new string[](num-1);
-                //landsToSellPrice = new uint256[](num-1);
-
-                
-                for(uint i=0; i<num; i++){
-                    if(!compareStrings(temp[i],land)){
-                        landsToSellId.push(temp[i]);
-                        landsToSellPrice.push(tempPr[i]);
+            function isTicketExist(string calldata ticket) public view returns(bool){
+                for(uint i; i<sellTickets.length; i++){
+                    if(compareStrings(sellTickets[i],ticket)){
+                        return true;
                     }
                 }
-
-                numberOfAllSellLandsList--;
+                return false;
             }
-            */
 
-  
 
         //
 
@@ -252,6 +244,61 @@ contract LandsStorage{
     // ==================== LATHERAL ====================
         function compareStrings(string memory a, string memory b) public pure returns (bool) {
             return (keccak256(abi.encodePacked((a))) == keccak256(abi.encodePacked((b))));
+        }
+
+         //temporarily hold the string part until a space is recieved
+
+        function splitStr(string memory str, string memory delimiter) public pure returns (string memory){ //delimiter can be any character that separates the integers 
+            
+            bytes memory b = bytes(str); //cast the string to bytes to iterate
+            bytes memory delm = bytes(delimiter); 
+            
+            
+            bytes memory tempNum; 
+            uint tempInd = 0;
+            uint pos =0;
+
+            for(uint i; i<b.length ; i++){          
+                if(b[i] == delm[0]) { //check if a not space
+                    pos =i;           
+                }
+                else { 
+                    if(pos>0){
+                        tempNum[tempInd] = b[i];
+                        tempInd++;
+                    }
+                    //numbers.push(strToUint(string(tempNum))); //push the int value converted from string to numbers array
+                    //tempNum = "";   //reset the tempNum to catch the net number                 
+                }                
+            }
+            return string(tempNum);
+
+            //string memory result = (tempNum);
+            //return result;
+        }   
+
+        function bytesToString(bytes memory _bytes32) public pure returns (string memory) {
+            uint8 i = 0;
+            while(i < 32 && _bytes32[i] != 0) {
+                i++;
+            }
+            bytes memory bytesArray = new bytes(i);
+            for (i = 0; i < 32 && _bytes32[i] != 0; i++) {
+                bytesArray[i] = _bytes32[i];
+            }
+            return string(bytesArray);
+        }
+
+        function strToUint(string memory _str) public pure returns(uint256) {
+            uint256 res =0;
+            for (uint256 i = 0; i < bytes(_str).length; i++) {
+                if ((uint8(bytes(_str)[i]) - 48) < 0 || (uint8(bytes(_str)[i]) - 48) > 9) {
+                    return res;
+                }
+                res += (uint8(bytes(_str)[i]) - 48) * 10**(bytes(_str).length - i - 1);
+            }
+            
+            return res;
         }
     //
 }

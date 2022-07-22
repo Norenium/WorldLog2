@@ -5,6 +5,10 @@ contract BuildingsAgent{
 
     // ========== Read Methods
 
+        function getIsAvailable() public pure returns(bool) {
+            return true;
+        }
+
         function getAllBuildings() public view returns(string[] memory) {
             return BS.getAllBuildings();
         }
@@ -29,8 +33,8 @@ contract BuildingsAgent{
 
     // ========== Write Methods
 
-        function buildBuilding(address bOwner, string memory bId, uint256 bType) public {
-            BS.addBuilding(bOwner,  bId,  bType);
+        function buildBuilding(address bOwner, string memory lId, uint256 bType) public {
+            BS.addBuilding(bOwner,  lId,  bType);
         }
 
         function transferBuildingOwnership(address to, string calldata buildingId) public {
@@ -42,11 +46,11 @@ contract BuildingsAgent{
     // ========== Storage Contract
 
         address BSA;
-        BuildingsStorage BS;
+        IBuildingsStorage BS;
 
-        function setBuildingsStorage(address adr) public {
+        function setIBuildingsStorage(address adr) public {
             BSA = adr;
-            BS = BuildingsStorage(adr);
+            BS = IBuildingsStorage(adr);
         }
 
         function getBSA() public view returns(address){
@@ -56,7 +60,7 @@ contract BuildingsAgent{
     //
 }
 
-interface BuildingsStorage{
+interface IBuildingsStorage{
     
     // Write
     function addBuilding(address adr, string memory buildingId, uint256 buildingType) external;

@@ -25,12 +25,18 @@ contract PermitsAgent{
             return PS.getPermitType(pId);
         }
 
+        function getPermitUsed(string memory pId) public view returns(bool){
+            return PS.getPermitUsed(pId);
+        }
+
+        
+
     //
 
     // ========== Write Methods
 
-        function issuePermit(address pOwner, string memory pId, uint256 bType, uint256 lType) public {
-            PS.addPermit(pOwner,  pId,  bType, lType);
+        function issuePermit(address pOwner, uint256 pType, uint256 lType) public {
+            PS.issueNewPermit(pOwner, pType, lType);
         }
 
         function usePermit(string calldata PermitId) public {
@@ -42,11 +48,11 @@ contract PermitsAgent{
     // ========== Storage Contract
 
         address PSA;
-        PermitsStorage PS;
+        IPermitsStorage PS;
 
         function setPermitsStorage(address adr) public {
             PSA = adr;
-            PS = PermitsStorage(adr);
+            PS = IPermitsStorage(adr);
         }
 
         function getPSA() public view returns(address){
@@ -56,12 +62,14 @@ contract PermitsAgent{
     //
 }
 
-interface PermitsStorage{
+interface IPermitsStorage{
     
     // Write
     function addPermit(address adr, string memory permitId, uint256 permitType, uint256 landType) external;
 
     function setPermitUsed(string calldata pId, bool  isUsed) external;
+
+    function issueNewPermit(address adr, uint256 permitType, uint256 landType) external;
 
 
     //Read
@@ -74,6 +82,9 @@ interface PermitsStorage{
     function getPermitOwner(string calldata PermitId) external view returns(address);
     
     function getPermitType(string calldata PermitId) external view returns(uint256);
+
+    function getPermitUsed(string calldata permitId) external view returns(bool);
+    
 
 
 }
