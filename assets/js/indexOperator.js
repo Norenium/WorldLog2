@@ -7,7 +7,12 @@ function listLand() {
 
 function removeListLand() {
       var landId = document.getElementById('remove-sell-landId').value;
-      removeLandFromSellList(landId);
+      for (let i = 0; i < sellLandArray.length; i++) {
+            if (sellLandArray[i].landId == landId) {
+                  landId += '-' + sellLandArray[i].price;
+            }
+      }
+      _removeLandFromSellList(landId);
 }
 
 function buyLand(landId, price) {
@@ -27,7 +32,7 @@ function buildBuilding() {
       var landId = document.getElementById('build-landId').value;
       var PermitId = document.getElementById('build-permitId').value;
       //console.log('Call for sell land -  id: ' + landId + '   price: ' + price);
-      _buildBuilding(PermitId, landId);
+      _buildBuilding(landId, PermitId);
 }
 
 function Hunt() {
@@ -46,7 +51,7 @@ function sellMeat() {
 }
 
 function buyMeat(ticketId, price) {
-      _buyMeat(ticketId, price);
+      _buyMeat(Number(ticketId), price);
 }
 
 function start() {

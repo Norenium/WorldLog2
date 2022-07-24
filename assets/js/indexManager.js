@@ -12,7 +12,7 @@ var myLands = new Array();
 var allLandsType = new Array();
 
 
-var sellLandsId, sellLandsPrice;
+var sellLandsIdList;
 var sellLandArray = new Array();
 var meatSellOffers = new Array();
 
@@ -120,7 +120,7 @@ function startPageManager() {
 
                   getMyLands().then(res3 => {
                         myLandsId = res3;
-                        //console.log('res3: ' + res3)
+                        console.log('get My Lands: ' + res3)
                         //console.log('myLandsId: ' + myLandsId)
 
                         if (myLandsId.length > 0) {
@@ -307,6 +307,8 @@ function startPageManager() {
 
 
       getMeatSellList().then(res => {
+            console.log('meatSellOffers resss info:');
+            console.info(meatSellOffers);
             if (res.length == 0) {
                   document.getElementById('no-meat-sell-list').style.display = 'block';
             } else {
@@ -348,48 +350,96 @@ function setSellMeatList() {
 }
 
 function getAndSetSellLandData() {
-      getSellLandsPrices().then(res => {
-            sellLandsPrice = res;
-            sellLandArray = new Array(sellLandsPrice.length);
+
+      getSellLandsList().then(res2 => {
+            sellLandsIdList = res2;
+            console.log('*****************');
+            console.info(sellLandsIdList);
+            sellLandArray = new Array(sellLandsIdList.length);
 
             document.getElementById('loading-sell-lands').style.display = "none";
 
-            if (sellLandsPrice.length == 0) {
+            if (sellLandsIdList.length == 0) {
                   document.getElementById('no-sell-lands').style.display = "block";
             } else {
 
+                  for (let i = 0; i < sellLandsIdList.length; i++) {
+                        var sellTicket = sellLandsIdList[i].split("-");
+                        var sellId = sellTicket[0];
+                        var sellPrice = Number(sellTicket[1]);
+                        var landType = getLandTypeByLandId(sellId);
 
-                  getSellLandsId().then(res2 => {
-                        sellLandsId = res2;
-                        //console.log('*****************')
-                        //console.info(allLandsId);
-                        //console.info(sellLandsId);
-                        for (let i = 0; i < allLandsId.length; i++) {
+                        console.log('sell id: ' + sellId + '   sell price: ' + sellPrice + '  seell land Type: ' + landType);
+                        var row = document.getElementById('sell-list');
+                        //console.log('inside the IF - j: ' + j + '    pr: ' + sellLandsPrice[j])
+                        var n = Math.floor(Math.random() * 10);
+                        var el = '<div class="land-for-sale" id="' + sellId + '-sale"> <div class=" row col-12"> <img src="assets/images/Avatars/Avatar (' + n + ').svg" alt="profile thumnail" class="col-1 lfs-img"> <p class="col-3">Land Id: ' +
+                              sellId + '</p> <p class="col-3">Seller: Darth Vader</p> <p class="col-4">Price: ' + sellPrice + ' OP <span class="' + landType + '">' + landType + '</span> </p> <div class="col-1"> <button type="button" class="btn btn-sm btn-primary float-end " onclick="buyLand(\''
+                              + sellId + '-' + sellPrice + '\',' + sellPrice + ')"> Buy </button> </div></div> </div>';
 
-                              for (let j = 0; j < sellLandsPrice.length; j++) {
-
-
-                                    if (allLandsId[i] == sellLandsId[j]) {
-                                          var row = document.getElementById('sell-list');
-                                          //console.log('inside the IF - j: ' + j + '    pr: ' + sellLandsPrice[j])
-                                          var n = Math.floor(Math.random() * 10);
-                                          var el = '<div class="land-for-sale" id="' + allLandsId[i] + '-sale"> <div class=" row col-12"> <img src="assets/images/Avatars/Avatar (' + n + ').svg" alt="profile thumnail" class="col-1 lfs-img"> <p class="col-3">Land Id: ' +
-                                                allLandsId[i] + '</p> <p class="col-3">Seller: Darth Vader</p> <p class="col-4">Price: ' + sellLandsPrice[j] + ' OP <span class="' + allLandsType[i] + '">' + allLandsType[i] + '</span> </p> <div class="col-1"> <button type="button" class="btn btn-sm btn-primary float-end " onclick="buyLand(\''
-                                                + allLandsId[i] + '\',' + sellLandsPrice[j] + ')"> Buy </button> </div></div> </div>';
-
-                                          row.innerHTML += el;
-                                          //console.log('j: ' + j)
-                                          sellLandArray[j] = { landId: allLandsId[i], landType: allLandsType[i], price: parseInt(sellLandsPrice[j]) };
-                                    }
-                              }
-
-                        }
-
-                  })
+                        row.innerHTML += el;
+                        //console.log('j: ' + j)
+                        sellLandArray[i] = { landId: sellId, landType: landType, price: sellPrice };
+                  }
             }
-            // console.log('sellLandArray: ---------')
-            // console.info(sellLandArray)
       })
+
+
+
+
+      /*
+            getSellLandsPrices().then(res => {
+                  sellLandsPrice = res;
+                  sellLandArray = new Array(sellLandsPrice.length);
+      
+                  document.getElementById('loading-sell-lands').style.display = "none";
+      
+                  if (sellLandsPrice.length == 0) {
+                        document.getElementById('no-sell-lands').style.display = "block";
+                  } else {
+      
+      
+                        getSellLandsId().then(res2 => {
+                              sellLandsId = res2;
+                              console.log('*****************')
+                              console.info(allLandsId);
+                              //console.info(sellLandsId);
+                              for (let i = 0; i < allLandsId.length; i++) {
+      
+                                    for (let j = 0; j < sellLandsPrice.length; j++) {
+      
+      
+                                          if (allLandsId[i] == sellLandsId[j]) {
+                                                var row = document.getElementById('sell-list');
+                                                //console.log('inside the IF - j: ' + j + '    pr: ' + sellLandsPrice[j])
+                                                var n = Math.floor(Math.random() * 10);
+                                                var el = '<div class="land-for-sale" id="' + allLandsId[i] + '-sale"> <div class=" row col-12"> <img src="assets/images/Avatars/Avatar (' + n + ').svg" alt="profile thumnail" class="col-1 lfs-img"> <p class="col-3">Land Id: ' +
+                                                      allLandsId[i] + '</p> <p class="col-3">Seller: Darth Vader</p> <p class="col-4">Price: ' + sellLandsPrice[j] + ' OP <span class="' + allLandsType[i] + '">' + allLandsType[i] + '</span> </p> <div class="col-1"> <button type="button" class="btn btn-sm btn-primary float-end " onclick="buyLand(\''
+                                                      + allLandsId[i] + '\',' + sellLandsPrice[j] + ')"> Buy </button> </div></div> </div>';
+      
+                                                row.innerHTML += el;
+                                                //console.log('j: ' + j)
+                                                sellLandArray[j] = { landId: allLandsId[i], landType: allLandsType[i], price: parseInt(sellLandsPrice[j]) };
+                                          }
+                                    }
+      
+                              }
+      
+                        })
+                  }
+                  // console.log('sellLandArray: ---------')
+                  // console.info(sellLandArray)
+
+                  */
+}
+
+function getLandTypeByLandId(landId) {
+      for (let i = 0; i < allLandsId.length; i++) {
+            if (allLandsId[i] == landId) {
+                  return allLandsType[i];
+            }
+
+      }
 }
 
 function setMyLands() {

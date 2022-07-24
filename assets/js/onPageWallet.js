@@ -151,16 +151,16 @@ function getMyLands() {
 
 
 
-function getSellLandsPrices() {
-      return new Promise(function (resolve) {
-            resolve(
-                  myContract.charlieCall(12, ["0x3B04C7553AEEf9797C50127B8C5d127B8384cF71"], [""], []).then(res => {
-                        return res;
-                  }));
-      })
-}
+// function getSellLandsPrices() {
+//       return new Promise(function (resolve) {
+//             resolve(
+//                   myContract.charlieCall(12, ["0x3B04C7553AEEf9797C50127B8C5d127B8384cF71"], [""], []).then(res => {
+//                         return res;
+//                   }));
+//       })
+// }
 
-function getSellLandsId() {
+function getSellLandsList() {
       return new Promise(function (resolve) {
             resolve(myContract.bravoCall(13, ["0x3B04C7553AEEf9797C50127B8C5d127B8384cF71"], [""], []).then(res => {
                   return res;
@@ -281,6 +281,11 @@ function _hunt() {
 
 function _eatMeat(amount) {
       myContract.deltaCall(32, ["0x87B64804e36f20acA9052D3b4Cd7188D41b59f97"], [""], [amount]);
+}
+
+
+function _buyMeat(sellId, price) {
+      myContract.deltaCall(38, ["0x3B04C7553AEEf9797C50127B8C5d127B8384cF71"], [""], [sellId, price]);
 }
 
 //#endregion
